@@ -35,7 +35,7 @@ fun LauncherAppGrid(modifier: Modifier = Modifier, apps: List<AppInfo>) {
             horizontalArrangement = Arrangement.spacedBy(AppGridDefaults.GRID_HORIZONTAL_SPACING),
             verticalArrangement = Arrangement.spacedBy(AppGridDefaults.GRID_VERTICAL_SPACING),
         ) {
-            items(items = apps, key = { it.packageName }) { app ->
+            items(items = apps, key = { it.componentName.flattenToString() }) { app ->
                 AppGridUiItem(appInfo = app)
             }
         }

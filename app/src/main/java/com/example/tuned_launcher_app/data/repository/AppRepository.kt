@@ -20,6 +20,7 @@ class AppRepository(private val context: Context) {
         launcherApps.getActivityList(null, Process.myUserHandle()).filter {
             it.applicationInfo.packageName != context.packageName }
             .map { activityInfo ->
+
                 AppInfo(
                     label = activityInfo.label.toString(),
                     packageName = activityInfo.componentName.packageName,
@@ -27,7 +28,7 @@ class AppRepository(private val context: Context) {
                     icon = activityInfo.getIcon(ICON_DENSITY),
                     launchIntent = Intent(Intent.ACTION_MAIN).apply {
                         component = activityInfo.componentName
-                        addCategory(Intent.CATEGORY_LAUNCHER)  } )
+                        addCategory(Intent.CATEGORY_LAUNCHER)  },)
         }
 
     fun getApps(): Flow<List<AppInfo>> = flow {

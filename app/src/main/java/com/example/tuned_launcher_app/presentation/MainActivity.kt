@@ -54,33 +54,9 @@ class MainActivity : ComponentActivity() {
                 val viewModel = koinViewModel<AppViewModel>()
                 val apps by viewModel.apps.collectAsState()
                 LauncherAppGrid(modifier = Modifier, apps = apps)
+
+                BottomSheet()
             }
         }
     }
 }
-
-
-/*
-
-      Column(
-                                modifier = Modifier.clickable {
-                                    startActivity(app.launchIntent)
-                                },
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(4.dp),
-                            ) {
-                                val bitmap = remember(app.packageName) { app.icon.toBitmap() }
-                                Image(
-                                    bitmap = bitmap.asImageBitmap(),
-                                    contentDescription = app.label,
-                                    modifier = Modifier.size(56.dp),
-                                )
-                                Text(
-                                    text = app.label,
-                                    fontSize = 11.sp,
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis,
-                                    textAlign = TextAlign.Center,
-                                )
-                            }
- */
