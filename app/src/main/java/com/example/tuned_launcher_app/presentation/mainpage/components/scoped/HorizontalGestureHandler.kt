@@ -2,8 +2,10 @@ package com.example.tuned_launcher_app.presentation.mainpage.components.scoped
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.Snapshot
@@ -107,7 +109,17 @@ internal class HorizontalGestureHandler(
 
     fun onDragEnd() {
         dragPhase = DragPhase.IDLE
-    }
+            scope.launch {
+                offsetAnimatable.animateTo(
+                    targetValue = 0f,
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    )
+                )
+            }
+        }
+
 
     fun computeTensionOffset(accumulatedDragX: Float, snapThresholdPx: Float): Float {
         val maxTensionOffsetPx = MAX_TENSION_OFFSET_DP * density.density
