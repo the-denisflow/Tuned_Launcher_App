@@ -17,8 +17,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import com.example.tuned_launcher_app.presentation.mainpage.components.scoped.manageHorizontalGesture
 import com.example.tuned_launcher_app.presentation.mainpage.components.scoped.rememberHorizontalGestureHandler
@@ -30,16 +33,23 @@ fun BottomSheet() {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
-    val offsetAnimatable = remember { Animatable(0f) }
+    val hapticFeedback = LocalHapticFeedback.current
+
+    // Animatable<Float, AnimationVector1D> : container of a single number that could change smoothly over time
+    // used for X-axis transition
+    val offsetXAnimatable = remember { Animatable(0f) }
+
     val screenWidthPx = remember (configuration, density) {
         with(density) {
             configuration.screenWidthDp.dp.toPx()
         }
     }
+
     val horizontalGestureHandler = rememberHorizontalGestureHandler(
         scope,
         density,
-        offsetAnimatable,
+        hapticFeedback,
+        offsetXAnimatable,
         screenWidthPx
     )
 
@@ -56,6 +66,12 @@ fun BottomSheet() {
                     enabled =  true,
                     handler = horizontalGestureHandler
                 )
+                .graphicsLayer {
+                    translationX = offsetXAnimatable.value
+                    scaleX = 1f
+                    alpha = 1f
+                    transformOrigin = TransformOrigin(0.5f, 1f)
+                }
                 .background(Color.DarkGray)
 
         ) {
